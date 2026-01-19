@@ -1,4 +1,5 @@
 require('./scraper/cron')
+require('dotenv').config()
 const express = require('express');
 
 const productsRoutes = require('./routes/products.routes')
