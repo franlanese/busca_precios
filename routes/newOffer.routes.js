@@ -42,6 +42,7 @@ router.post('/', async (req, res) => {
     ]
 
     const result = await pool.query(query, values)
+    console.log("result: ", result)
     res.json(result.rows[0])
 });
 

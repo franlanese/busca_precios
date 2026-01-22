@@ -12,17 +12,19 @@ router.get('/', async (req, res) => {
         .json({ error: 'q es requerido' })
     }
 
-    // const terms = q.toLowerCase().split(' ');
+    const terms = q.toLowerCase().split(/\s+/).filter(t => t.length > 0);
     
+    const whereClauses = terms.map((_, i) => `normalized_title LIKE $${i + 1}`)
     const query = `
         SELECT *
         FROM offers
-        WHERE normalized_title LIKE '%' || $1 || '%'
+        WHERE ${whereClauses.join(' AND ')}
         ORDER BY price ASC
         LIMIT 50
     `
 
-    const result = await pool.query(query, [q])
+    const values = terms.map(t => `%${t}%`)
+    const result = await pool.query(query, values)
 
     console.log("result: ", result)
     res.json(result.rows)

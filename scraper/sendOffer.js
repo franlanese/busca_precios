@@ -1,5 +1,9 @@
+require ('dotenv').config();
+
 async function sendOffer(offer) {
-    await fetch('http://localhost:4500/newOffer', {
+    const baseUrl = process.env.API_URL 
+
+    await fetch(`${baseUrl}/newOffer`, {
         method: 'POST',
         headers: {
             'Content-Type' : 'application/json'
