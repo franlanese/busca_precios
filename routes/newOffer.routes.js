@@ -15,6 +15,8 @@ router.post('/', async (req, res) => {
         category
     } = req.body
 
+    console.log("Nueva oferta: ", title, price)
+
     const normalizedTitle = normalize(title)
 
     const query = `

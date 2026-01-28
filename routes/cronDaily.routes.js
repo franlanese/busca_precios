@@ -7,8 +7,6 @@ router.get("/", async (req, res) => {
         return res.status(401).send("Unauthorized. ")
     }
     try {
-
-
         await runScraping()
         res.status(200).send("OK")
     } catch (err) {

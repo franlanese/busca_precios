@@ -62,9 +62,7 @@ async function scrapeOnCity(search) {
     for (const product of products) {
         if (!product.title || !product.price) continue;
 
-
-
-
+        console.log(`${product.title} - ${product.price}`)
         await sendOffer({
             store: 'On City',
             title: product.title,
