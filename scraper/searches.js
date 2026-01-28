@@ -1,3 +1,3 @@
 module.exports = [
-    "celular samsung", "celular moto", "celular xiaomi"
+    "celular moto", "celular samsung", "celular xiaomi"
 ]
