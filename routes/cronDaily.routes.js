@@ -10,7 +10,8 @@ router.get("/", async (req, res) => {
         await runScraping()
         res.status(200).send("OK")
     } catch (err) {
-        res.status(500).send("Error: ", err)
+        console.error("Error in cronDaily:", err);
+        res.status(500).send("Error: " + (err.message || err));
     }
 })
 
