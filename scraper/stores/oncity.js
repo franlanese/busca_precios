@@ -2,7 +2,13 @@ const { chromium } = require('playwright');
 const sendOffer = require('../sendOffer');
 
 async function scrapeOnCity(search) {
-    const browser = await chromium.launch({ headless: true })
+    const browser = await chromium.launch({
+        headless: true, args: [
+            '--no-sandbox',
+            '--disable-setuid-sandbox',
+            '--disable-dev-shm-usage'
+        ]
+    })
     const page = await browser.newPage();
 
     const url = `https://www.oncity.com/${encodeURIComponent(search)}?_q=${encodeURIComponent(search)}&map=ft`

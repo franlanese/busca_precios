@@ -10,7 +10,7 @@ router.get("/", async (req, res) => {
         await runScraping()
         res.status(200).send("OK")
     } catch (err) {
-        res.status(500).send("Error")
+        res.status(500).send("Error: ", err)
     }
 })
 
