@@ -4,7 +4,7 @@ const offers = require('../data/offers');
 const pool = require('../db');
 
 router.get('/', async (req, res) => {
-    const q = req.query.q;
+    const { q, category } = req.query;
 
     if (!q) {
         return res
@@ -14,7 +14,20 @@ router.get('/', async (req, res) => {
 
     const terms = q.toLowerCase().split(/\s+/).filter(t => t.length > 0);
     
-    const whereClauses = terms.map((_, i) => `normalized_title LIKE $${i + 1}`)
+    let whereClauses = [];
+    let values = [];
+    let idx = 1
+
+    for (const term of terms) {
+        whereClauses.push(`normalized_title LIKE $${idx++}`)
+        values.push(`%${term}%`)
+    }
+
+    if (category) {
+        whereClauses.push(`category = $${idx++}`);
+        values.push(category)
+    }
+
     const query = `
         SELECT *
         FROM offers
@@ -22,8 +35,6 @@ router.get('/', async (req, res) => {
         ORDER BY price ASC
         LIMIT 50
     `
-
-    const values = terms.map(t => `%${t}%`)
     const result = await pool.query(query, values)
 
     console.log("result: ", result)
