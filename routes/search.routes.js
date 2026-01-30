@@ -6,6 +6,8 @@ const pool = require('../db');
 router.get('/', async (req, res) => {
     const { q, category } = req.query;
 
+    console.log("query: ", q, category)
+
     if (!q) {
         return res
         .status(400)
@@ -24,8 +26,10 @@ router.get('/', async (req, res) => {
     }
 
     if (category) {
-        whereClauses.push(`category = $${idx++}`);
-        values.push(category)
+        const categoriesList = String(category).split(',').map(c => c.toLowerCase().trim())
+
+        whereClauses.push(`category = ANY($${idx++})`);
+        values.push(categoriesList)
     }
 
     const query = `
