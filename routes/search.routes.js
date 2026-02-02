@@ -8,21 +8,24 @@ router.get('/', async (req, res) => {
 
     console.log("query: ", q, category)
 
-    if (!q) {
+    if (!q && !category) {
         return res
         .status(400)
-        .json({ error: 'q es requerido' })
+        .json({ error: 'q o category es requerido' })
     }
-
-    const terms = q.toLowerCase().split(/\s+/).filter(t => t.length > 0);
     
     let whereClauses = [];
     let values = [];
     let idx = 1
 
-    for (const term of terms) {
+    
+    if (q) {
+        const terms = q.toLowerCase().split(/\s+/).filter(t => t.length > 0);
+        
+        for (const term of terms) {
         whereClauses.push(`normalized_title LIKE $${idx++}`)
         values.push(`%${term}%`)
+        }
     }
 
     if (category) {
