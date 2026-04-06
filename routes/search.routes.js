@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const offers = require('../data/offers');
 const pool = require('../db');
+const SEARCH_LIMIT = require('../utils/constants')
 
 router.get('/', async (req, res) => {
-    const { q, category } = req.query;
+    const { q, category , page = 1} = req.query;
 
     console.log("query: ", q, category)
 
@@ -35,14 +36,21 @@ router.get('/', async (req, res) => {
         values.push(categoriesList)
     }
 
+    const offset = (Number(page) - 1) * SEARCH_LIMIT
+
     const query = `
         SELECT *
         FROM offers
         WHERE ${whereClauses.join(' AND ')}
         ORDER BY price ASC
-        LIMIT 50
-    `
+        LIMIT $${idx++} 
+        OFFSET $${idx}
+    `;
+
+    values.push(SEARCH_LIMIT, offset)
     const result = await pool.query(query, values)
+
+    console.log("QUERY DB: ", query)
 
     console.log("result: ", result)
     res.json(result.rows)
