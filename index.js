@@ -5,6 +5,7 @@ const express = require('express');
 //const productsRoutes = require('./routes/products.routes')
 const newOfferRoutes = require('./routes/newOffer.routes')
 const searchRoutes = require('./routes/search.routes')
+const updateOffersRoutes = require('./routes/updateOffers.routes')
 //const cronDailyRoutes = require('./routes/cronDaily.routes')
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.json())
 //app.use('/products', productsRoutes)
 app.use('/newOffer', newOfferRoutes)
 app.use('/search', searchRoutes)
+app.use('/updateOffers', updateOffersRoutes)
 //app.use('/cronDaily', cronDailyRoutes)
 
 app.listen(PORT, () => {
